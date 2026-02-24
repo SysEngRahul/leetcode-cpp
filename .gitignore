@@ -21,3 +21,11 @@ cmake-build-*/
 # OS junk
 .DS_Store
 Thumbs.db
+
+# Executables without extension (Linux default output)
+easy/*
+medium/*
+hard/*
+src/*
+!*.cpp
+!*.h
