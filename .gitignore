@@ -1,13 +1,22 @@
-# Binaries
+# Binaries (Linux / macOS)
 *.out
-*.exe
 *.o
+*.a
+*.so
+
+# Windows binaries
+*.exe
+*.dll
+
+# Common compiled output names (no extension)
+a.out
+
+# Build directories
+build/
+cmake-build-*/
 
 # VS Code
 .vscode/
-
-# Build folders
-build/
 
 # OS junk
 .DS_Store
