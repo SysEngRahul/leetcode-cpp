@@ -1,29 +1,30 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-# Resolve repo root (directory where this script lives)
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+# Resolve repo root even if script is called from anywhere
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [[ -z "$1" ]]; then
+if [[ $# -ne 1 ]]; then
   echo "Usage: run.sh <relative/path/to/file.cpp>"
   echo "Example: run.sh easy/two_sum.cpp"
   exit 1
 fi
 
-SRC_REL="$1"
-SRC_ABS="$ROOT/$SRC_REL"
+SRC="$1"
+SRC_PATH="$ROOT/$SRC"
 
-if [[ ! -f "$SRC_ABS" ]]; then
-  echo "Error: Source file not found: $SRC_ABS"
+if [[ ! -f "$SRC_PATH" ]]; then
+  echo "Error: source file not found: $SRC"
   exit 1
 fi
 
-OUT="$ROOT/build/$(basename "$SRC_REL" .cpp).out"
+OUT_DIR="$ROOT/build"
+OUT_BIN="$OUT_DIR/$(basename "$SRC" .cpp).out"
 
-mkdir -p "$ROOT/build"
+mkdir -p "$OUT_DIR"
 
-g++ "$SRC_ABS" -std=c++17 -O2 -Wall -Wextra -Werror -o "$OUT"
+# Compile with warnings enabled (professional defaults)
+g++ "$SRC_PATH" -std=c++17 -O2 -Wall -Wextra -Wconversion -pedantic -o "$OUT_BIN"
 
-echo "Built: $OUT"
-echo "Running..."
-"$OUT"
+# Run
+"$OUT_BIN"
